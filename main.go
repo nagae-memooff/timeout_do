@@ -48,7 +48,7 @@ func sysexec(timeout int, cmd string, args ...string) (stdout string, err error)
 	}()
 
 	select {
-	case <-time.After(time.Duration(timeout) * time.Millisecond):
+	case <-time.After(time.Duration(timeout) * time.Second):
 		// 超时处理
 		if err := process.Process.Kill(); err != nil {
 			process.Process.Signal(os.Kill)
