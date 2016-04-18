@@ -25,8 +25,10 @@ func main() {
 	stdout, err := sysexec(timeout, cmd, args...)
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
 	} else {
 		fmt.Print(stdout)
+		os.Exit(0)
 	}
 }
 
