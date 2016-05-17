@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -50,8 +51,8 @@ func sysexec(timeout int, cmd string, args ...string) (stdout string, err error)
 	select {
 	case <-time.After(time.Duration(timeout) * time.Second):
 		// 超时处理
-		if err := process.Process.Kill(); err != nil {
-			process.Process.Signal(os.Kill)
+		if err := process.Process.Signal(syscall.SIGKILL); err != nil {
+			return fmt.Sprintf("kill -9 %d", process.Process.Pid), errors.New(fmt.Sprintf("(PID:%d)ERROR:kill falure", process.Process.Pid))
 		}
 		return "killed", errors.New("timeout")
 
